@@ -1,0 +1,40 @@
+{
+  "name" : "aropixel/contact-bundle",
+  "description" : "Gestion de contact pour admin Aropixel",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Joël Gomez Caballe",
+    "email" : "joel.gomez@aropixel.com"
+  }],
+  "keywords" : [
+    "aropixel admin contact bundle"
+  ],
+  "license" : [
+    "MIT"
+  ],
+  "autoload" : {
+    "psr-4" : {
+      "Aropixel\\ContactBundle\\" : ""
+    }
+  },
+  "require" : {
+    "aropixel/admin-bundle": "^1.0"
+  },
+  "scripts": {
+    "auto-scripts": {
+      "aropixel:admin:setup": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ]
+  },
+  "extra" : {
+    "private-dir": "private",
+    "branch-alias" : {
+      "dev-master" : "0.1"
+    }
+  }
+}

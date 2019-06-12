@@ -1,0 +1,56 @@
+{% extends '@AropixelAdmin/List/datatable.html.twig' %}
+
+
+{% block header_elements %}{% endblock %}
+
+{% block meta_title %} Contacts - Liste des messages {% endblock %}
+{% block header_title %}Contacts{% endblock %}
+{% block header_breadcrumb %}
+    <ul class="breadcrumb breadcrumb-caret position-right">
+        <li class="breadcrumb-item"><a href="{{ url('_admin') }}">Accueil</a></li>
+        <li class="breadcrumb-item active">Contacts</li>
+    </ul>
+{% endblock %}
+
+
+{% block paneltitle %}Liste des messages{% endblock %}
+
+
+{% block paneldatatable %}
+
+    <table class="table card-table table-vcenter text-nowrap datatable">
+        <thead>
+        <tr>
+            <th class="sort-date-eu" style="width:200px">Date</th>
+            <th>Titre</th>
+            <th style="width:200px">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td style="vertical-align: top">{{ contact.createdAt|datetime('dd/MM/y H:mm') }}</td>
+                <td>
+                    <strong style="width: 45px; display: inline-block;">De:</strong>{{ contact.nomFrom ? contact.nomFrom ~ ' ' : '' }}&nbsp;&nbsp;&lt;{{ contact.emailFrom }}&gt;<br />
+                    <strong style="width: 45px; display: inline-block;">À:</strong>{{ contact.nomTo ? contact.nomTo ~ ' ' : '' }}&nbsp;&nbsp;&lt;{{ contact.emailTo }}&gt;<br />
+                    <strong style="width: 45px; display: inline-block;">Objet:</strong>{{ contact.objet }}<br />
+                    <div class="m-t-5 text-muted">{{ contact.message | truncate(120, false, '...') }}</div>
+                </td>
+                <td style="vertical-align: top">
+                    <div class="btn-group">
+                        <a href="{{ path('contact_edit', {'id': contact.id}) }}" class="btn btn-xs {{ not contact.read ? 'bg-teal-400' : 'bg-grey-300' }} btn-labeled"><b><i class="icon-search4"></i></b> Consulter</a>
+                        <button type="button" class="btn btn-xs {{ not contact.read ? 'bg-teal-400' : 'bg-grey-300' }} dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="{{ path('contact_edit', {'id': contact.id}) }}"><i class="icon-search4"></i> Consulter</a></li>
+                            <li class="divider"></li>
+                            <li><a class="delete" data-confirm="Êtes-vous certain de vouloir supprimer ce contact ?"><i class="icon-gear"></i> Supprimer</a></li>
+                        </ul>
+                        {{ form(delete_forms[contact.id]) }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

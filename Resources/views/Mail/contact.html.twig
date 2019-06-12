@@ -1,0 +1,15 @@
+{% extends '@AropixelContact/Mail/base.html.twig' %}
+
+{% block header %}Demande de contact{% endblock header %}
+{% block content %}
+    <p>&nbsp;</p>
+    <p>Une demande de contact vous a été envoyée le {{ "now"|date("j F Y à H:i") }}</p>
+    <ul style="list-style: none">
+        <li>
+            <p>
+                <strong>Message</strong><br/>
+                {{ message|nl2br }}
+            </p>
+        </li>
+    </ul>
+{% endblock content %}
