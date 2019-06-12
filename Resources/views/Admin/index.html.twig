@@ -38,12 +38,12 @@
                 </td>
                 <td style="vertical-align: top">
                     <div class="btn-group">
-                        <a href="{{ path('contact_edit', {'id': contact.id}) }}" class="btn btn-xs {{ not contact.read ? 'bg-teal-400' : 'bg-grey-300' }} btn-labeled"><b><i class="icon-search4"></i></b> Consulter</a>
-                        <button type="button" class="btn btn-xs {{ not contact.read ? 'bg-teal-400' : 'bg-grey-300' }} dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                        <a href="{{ path('contact_edit', {'id': contact.id}) }}" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }}"><b><i class="icon-search4"></i></b> Consulter</a>
+                        <button type="button" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }} dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="{{ path('contact_edit', {'id': contact.id}) }}"><i class="icon-search4"></i> Consulter</a></li>
-                            <li class="divider"></li>
-                            <li><a class="delete" data-confirm="Êtes-vous certain de vouloir supprimer ce contact ?"><i class="icon-gear"></i> Supprimer</a></li>
+                            <li class="dropdown-item"><a href="{{ path('contact_edit', {'id': contact.id}) }}"><i class="fas fa-search"></i> Consulter</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-item"><a class="delete" data-confirm="Êtes-vous certain de vouloir supprimer ce contact ?"><i class="fas fa-trash"></i> Supprimer</a></li>
                         </ul>
                         {{ form(delete_forms[contact.id]) }}
                     </div>
