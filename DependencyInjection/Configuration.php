@@ -17,8 +17,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('aropixel_contact');
+        $treeBuilder = new TreeBuilder('aropixel_contact');
+        $rootNode = $treeBuilder->getRootNode();
         $rootNode
              ->children()
                  ->scalarNode('mail_template')
