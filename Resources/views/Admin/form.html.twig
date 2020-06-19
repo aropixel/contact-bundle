@@ -2,11 +2,17 @@
 
 {% block header_elements %}
     {% set baseroute = app.request.get('_route')|split('_', -1)|join('') %}
-    <a href="{{ path(baseroute ~ '_index') }}" class="btn btn-link btn-float has-text"><i class="icon-list text-primary"></i><span>Liste</span></a>
+    <a href="{{ path(baseroute ~ '_index') }}" class="fa-stack" data-toggle="tooltip" data-placement="bottom" title="Liste">
+        <i class="fas fa-circle fa-stack-2x"></i>
+        <i class="fas fa-list fa-stack-1x fa-inverse"></i>
+    </a>
     {% if delete_form is defined and delete_form %}
-        {{ form_start(delete_form, {'attr': {'class': 'form-inline'}}) }}
+        {{ form_start(delete_form, {'attr': {'class': 'd-inline-block'}}) }}
         {{ form_widget(delete_form._token) }}
-        <button type="button" id="delete_button" class="btn btn-link btn-float has-text"><i class="icon-bin text-danger"></i><span>Supprimer</span></button>
+        <button type="button" id="delete_button" class="fa-stack danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer">
+            <i class="fas fa-circle fa-stack-2x"></i>
+            <i class="fas fa-trash fa-stack-1x fa-inverse"></i>
+        </button>
         {{ form_end(delete_form) }}
     {% endif %}
 {% endblock %}
@@ -30,30 +36,33 @@
         <div class="card-header">
             <h6>Destinataire:&nbsp;&nbsp;<span class="text-semibold">{{ contact.nomTo }}</span>&nbsp;&nbsp;<span class="text-size-small">&lt;{{ contact.emailTo }}&gt;</span></h6>
         </div>
-        <table class="table table-responsive">
-            <tr>
-                <td><span class="text-semibold">Objet</span></td>
-                <td>{{ contact.objet }}</td>
-            </tr>
-            <tr>
-                <td><span class="text-semibold">Nom</span></td>
-                <td>{{ contact.nomFrom }}</td>
-            </tr>
-            <tr>
-                <td><span class="text-semibold">Email</span></td>
-                <td>{{ contact.emailFrom }}</td>
-            </tr>
-            {% for label,value in contact.informations %}
+        <div class="table-responsive">
+            <table class="table">
                 <tr>
-                    <td><span class="text-semibold">{{ label }}</span></td>
-                    <td>{{ value }}</td>
+                    <td><span class="text-semibold">Objet</span></td>
+                    <td>{{ contact.objet }}</td>
                 </tr>
-            {% endfor %}
-            <tr>
-                <td>&nbsp;</td>
-                <td>{{ contact.message|length ? contact.message|nl2br : '' }}</td>
-            </tr>
-        </table>
+                <tr>
+                    <td><span class="text-semibold">Nom</span></td>
+                    <td>{{ contact.nomFrom }}</td>
+                </tr>
+                <tr>
+                    <td><span class="text-semibold">Email</span></td>
+                    <td>{{ contact.emailFrom }}</td>
+                </tr>
+                {% for label,value in contact.informations %}
+                    <tr>
+                        <td><span class="text-semibold">{{ label }}</span></td>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>{{ contact.message|length ? contact.message|nl2br : '' }}</td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 
 {% endblock %}
@@ -61,7 +70,7 @@
 
 {% block publishStatus %}
 
-    <div class="row form-group">
+    <div class="row">
         <div class="col-md-12">
             {{ form_row(form.read, {'value': '0', 'label_attr': {'class' : 'radio-inline'}}) }}
             {{ form_row(form.answered, {'value': '0', 'label_attr': {'class' : 'radio-inline'}}) }}
