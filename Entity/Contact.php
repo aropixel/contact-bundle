@@ -9,7 +9,7 @@ use Symfony\Component\Form\Form;
 /**
  * Contact
  *
- * @ORM\Table(name="contact")
+ * @ORM\Table(name="aropixel_contact")
  * @ORM\Entity(repositoryClass="Aropixel\ContactBundle\Repository\ContactRepository")
  */
 class Contact
