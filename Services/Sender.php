@@ -11,9 +11,9 @@ namespace Aropixel\ContactBundle\Services;
 use Aropixel\ContactBundle\Entity\Contact;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Form\Form;
+use Twig\Environment;
 
 
 class Sender
@@ -73,7 +73,7 @@ class Sender
      * @param $em
      * @param $mailer
      */
-    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, EngineInterface $templating)
+    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, Environment $templating)
     {
         $this->bcc = array();
         $this->em = $em;
