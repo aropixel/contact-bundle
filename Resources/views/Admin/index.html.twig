@@ -34,7 +34,7 @@
                     <strong style="width: 45px; display: inline-block;">De:</strong>{{ contact.nomFrom ? contact.nomFrom ~ ' ' : '' }}&nbsp;&nbsp;&lt;{{ contact.emailFrom }}&gt;<br />
                     <strong style="width: 45px; display: inline-block;">À:</strong>{{ contact.nomTo ? contact.nomTo ~ ' ' : '' }}&nbsp;&nbsp;&lt;{{ contact.emailTo }}&gt;<br />
                     <strong style="width: 45px; display: inline-block;">Objet:</strong>{{ contact.objet }}<br />
-                    <div class="m-t-5 text-muted">{{ contact.message | truncate(120, false, '...') }}</div>
+                    <div class="m-t-5 text-muted">{{ contact.message | u.truncate(120, false, '...') }}</div>
                 </td>
                 <td style="vertical-align: top">
                     <div class="btn-group">

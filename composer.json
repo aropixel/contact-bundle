@@ -19,7 +19,8 @@
   },
   "require" : {
     "aropixel/admin-bundle": "^1.0",
-    "symfony/swiftmailer-bundle": "^3.4"
+    "symfony/swiftmailer-bundle": "^3.4",
+    "twig/string-extra": "^3.0"
   },
   "scripts": {
     "auto-scripts": {
