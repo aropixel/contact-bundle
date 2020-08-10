@@ -13,6 +13,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 
@@ -73,7 +77,7 @@ class Sender
      * @param $em
      * @param $mailer
      */
-    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, Environment $templating)
+    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, Environment $templating)
     {
         $this->bcc = array();
         $this->em = $em;
@@ -116,24 +120,25 @@ class Sender
 
 
             // Construit le mail à envoyer
-            $message = new \Swift_Message($this->subject);
+            $message = new Email();
             $message
-                ->setFrom(array($this->contact->getEmailFrom() => $this->contact->getNomFrom()))
-                ->setTo(array($this->contact->getEmailTo() => $this->contact->getNomTo()))
-                ->setBody($html, 'text/html')
+                ->subject($this->subject ?: $this->contact->getObjet())
+                ->from(new Address($this->contact->getEmailFrom(), $this->contact->getNomFrom()))
+                ->to(new Address($this->contact->getEmailTo(), $this->contact->getNomTo()))
+                ->html($html)
             ;
 
             //
             if (count($this->bcc)) {
-                $message->setBcc($this->bcc);
+                $message->bcc($this->bcc);
             }
 
             //
             $this->mailer->send($message);
 
         }
-        catch(\Swift_RfcComplianceException $e){
-
+        catch(TransportExceptionInterface $e){
+            dump($e);
         }
 
         return $this;
@@ -147,21 +152,18 @@ class Sender
             // Prépare le message HTML à envoyer
             $html = $this->templating->render($this->templateNotify, $this->data);
 
-            $message = new \Swift_Message($this->subject);
+            $message = new Email();
             $message
-                ->setFrom(array($this->senderEmail => $this->senderName))
-                ->setTo(array($this->contact->getEmailFrom() => $this->contact->getNomFrom()))
-                ->setBody(
-                    $html,
-                    'text/html'
-                );
+                ->subject($this->subject)
+                ->from(new Address($this->senderEmail, $this->senderName))
+                ->to(new Address($this->contact->getEmailFrom(), $this->contact->getNomFrom()))
+                ->html($html);
 
             //
             $this->mailer->send($message);
 
-
-        }catch(\Swift_RfcComplianceException $e){
-
+        }
+        catch(TransportExceptionInterface $e){
         }
 
 

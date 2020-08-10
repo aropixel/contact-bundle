@@ -18,7 +18,7 @@
 
 {% block paneldatatable %}
 
-    <table class="table card-table table-vcenter text-nowrap datatable">
+    <table class="table card-table table-vcenter text-nowrap datatable" data-order-column="1" data-order-direction="DESC">
         <thead>
         <tr>
             <th class="sort-date-eu" style="width:200px">Date</th>
@@ -38,10 +38,10 @@
                 </td>
                 <td style="vertical-align: top">
                     <div class="btn-group">
-                        <a href="{{ path('contact_edit', {'id': contact.id}) }}" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }}"><b><i class="icon-search4"></i></b> Consulter</a>
+                        <a href="{{ path('aropixel_contact_edit', {'id': contact.id}) }}" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }}"><b><i class="icon-search4"></i></b> Consulter</a>
                         <button type="button" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }} dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li class="dropdown-item"><a href="{{ path('contact_edit', {'id': contact.id}) }}"><i class="fas fa-search"></i> Consulter</a></li>
+                            <li class="dropdown-item"><a href="{{ path('aropixel_contact_edit', {'id': contact.id}) }}"><i class="fas fa-search"></i> Consulter</a></li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a class="delete" data-confirm="Êtes-vous certain de vouloir supprimer ce contact ?"><i class="fas fa-trash"></i> Supprimer</a></li>
                         </ul>

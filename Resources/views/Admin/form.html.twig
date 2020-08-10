@@ -1,7 +1,7 @@
 {% extends '@AropixelAdmin/Form/base.html.twig' %}
 
 {% block header_elements %}
-    {% set baseroute = app.request.get('_route')|split('_', -1)|join('') %}
+    {% set baseroute = get_baseroute() %}
     <a href="{{ path(baseroute ~ '_index') }}" class="fa-stack" data-toggle="tooltip" data-placement="bottom" title="Liste">
         <i class="fas fa-circle fa-stack-2x"></i>
         <i class="fas fa-list fa-stack-1x fa-inverse"></i>
@@ -22,7 +22,7 @@
 {% block header_breadcrumb %}
     <ul class="breadcrumb breadcrumb-caret position-right">
         <li class="breadcrumb-item"><a href="{{ url('_admin') }}">Accueil</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('contact_index') }}">Contacts</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('aropixel_contact_index') }}">Contacts</a></li>
         <li class="breadcrumb-item">Consulter</li>
         <li class="breadcrumb-item active">{{ contact.nomFrom }}</li>
     </ul>

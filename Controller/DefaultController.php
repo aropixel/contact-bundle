@@ -19,14 +19,14 @@ class DefaultController extends AbstractController
     /**
      * Lists all contact entities.
      *
-     * @Route("/", name="contact_index", methods={"GET"})
+     * @Route("/", name="aropixel_contact_index", methods={"GET"})
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
         /** @var Contact[] $contacts */
-        $contacts = $em->getRepository(Contact::class)->findAll();
+        $contacts = $em->getRepository(Contact::class)->findBy([], ['createdAt' => 'DESC']);
 
         $delete_forms = array();
         foreach ($contacts as $entity) {
@@ -44,7 +44,7 @@ class DefaultController extends AbstractController
     /**
      * Change read proprety status.
      *
-     * @Route("/{id}/read", name="contact_read", methods={"GET"})
+     * @Route("/{id}/read", name="aropixel_contact_read", methods={"GET"})
      */
     public function readAction(Status $status, Contact $contact)
     {
@@ -60,7 +60,7 @@ class DefaultController extends AbstractController
     /**
      * Change read proprety status.
      *
-     * @Route("/{id}/answered", name="contact_answered", methods={"GET"})
+     * @Route("/{id}/answered", name="aropixel_contact_answered", methods={"GET"})
      */
     public function answeredAction(Status $status, Contact $contact)
     {
@@ -76,7 +76,7 @@ class DefaultController extends AbstractController
     /**
      * Displays a form to edit an existing contact entity.
      *
-     * @Route("/{id}/edit", name="contact_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="aropixel_contact_edit", methods={"GET","POST"})
      */
     public function editAction(Request $request, Contact $contact)
     {
@@ -88,7 +88,7 @@ class DefaultController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('notice', 'Votre contenu a bien été enregistré.');
 
-            return $this->redirectToRoute('contact_edit', array('id' => $contact->getId()));
+            return $this->redirectToRoute('aropixel_contact_edit', array('id' => $contact->getId()));
         }
 
         return $this->render('@AropixelContact/Admin/form.html.twig', array(
@@ -101,7 +101,7 @@ class DefaultController extends AbstractController
     /**
      * Deletes a contact entity.
      *
-     * @Route("/{id}", name="contact_delete", methods={"DELETE"})
+     * @Route("/{id}", name="aropixel_contact_delete", methods={"DELETE"})
      */
     public function deleteAction(Request $request, Contact $contact)
     {
@@ -114,7 +114,7 @@ class DefaultController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('contact_index');
+        return $this->redirectToRoute('aropixel_contact_index');
     }
 
     /**
@@ -127,7 +127,7 @@ class DefaultController extends AbstractController
     private function createDeleteForm(Contact $contact)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('contact_delete', array('id' => $contact->getId())))
+            ->setAction($this->generateUrl('aropixel_contact_delete', array('id' => $contact->getId())))
             ->setMethod('DELETE')
             ->getForm()
             ;
