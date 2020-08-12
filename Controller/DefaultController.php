@@ -5,6 +5,7 @@ namespace Aropixel\ContactBundle\Controller;
 use Aropixel\AdminBundle\Services\Status;
 use Aropixel\ContactBundle\Entity\Contact;
 use Aropixel\ContactBundle\Form\ContactType;
+use Aropixel\ContactBundle\Services\AttachmentProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -69,6 +70,18 @@ class DefaultController extends AbstractController
             ->setValues(0, 1)
             ->changeStatus($contact)
         ;
+
+    }
+
+
+    /**
+     * Change read proprety status.
+     *
+     * @Route("/{id}/download/{file}", name="aropixel_contact_download", methods={"GET"})
+     */
+    public function downloadFile(AttachmentProvider $attachmentProvider, Contact $contact, $file)
+    {
+        return $this->file($attachmentProvider->getAttachment($file));
 
     }
 

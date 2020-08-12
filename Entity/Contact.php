@@ -76,6 +76,11 @@ class Contact
     protected $informations;
 
     /**
+     * @ORM\Column(name="attachments", type="array", nullable=true)
+     */
+    protected $attachments;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="readed", type="boolean")
@@ -360,13 +365,19 @@ class Contact
     /**
      * Set informations
      *
-     * @param Form $form
+     * @param array|Form $informations
      * @param array $fields
      *
      * @return Contact
      */
-    public function setInformations(Form $form, $fields)
+    public function setInformations($informations, $fields=null)
     {
+        if (is_null($fields)) {
+            $this->informations = $informations;
+            return;
+        }
+
+        $form = $informations;
         $formFields = $form->all();
         $data = array();
 
@@ -406,6 +417,26 @@ class Contact
     {
         return $this->informations;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    /**
+     * @param string $filename
+     * @return Contact
+     */
+    public function addAttachment($title, $filename)
+    {
+        $this->attachments[$title] = $filename;
+        return $this;
+    }
+
+
 
     /**
      * Set objet

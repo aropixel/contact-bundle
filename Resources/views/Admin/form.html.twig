@@ -50,6 +50,16 @@
                     <td><span class="text-semibold">Email</span></td>
                     <td>{{ contact.emailFrom }}</td>
                 </tr>
+                {% if contact.attachments %}
+                    <tr>
+                        <td><span class="text-semibold">Pièces jointes:</span></td>
+                        <td>
+                        {% for label,value in contact.attachments %}
+                            {% if not loop.first %}<br />{% endif %}{{ label }}: <a href="{{ path('aropixel_contact_download', {'id': contact.id, 'file': value}) }}">{{ value }}</a>
+                        {% endfor %}
+                        </td>
+                    </tr>
+                {% endif %}
                 {% for label,value in contact.informations %}
                     <tr>
                         <td><span class="text-semibold">{{ label }}</span></td>
