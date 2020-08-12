@@ -2,6 +2,7 @@
 
 namespace Aropixel\ContactBundle\DependencyInjection;
 
+use Aropixel\AdminBundle\Entity\ImageInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -24,6 +25,8 @@ class AropixelContactExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $container->setParameter('aropixel_contact.attachment_dir', $config['attachment_directory']);
 
         // Once the services definition are read, get your service and add a method call to setConfig()
         $sillyServiceDefintion = $container->getDefinition( 'Aropixel\ContactBundle\Services\Sender' );
