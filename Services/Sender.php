@@ -136,8 +136,8 @@ class Sender
                 ->html($html)
             ;
 
-
-            foreach ($this->contact->getAttachments() as $fileName) {
+            $attachments = $this->contact->getAttachments() ?: [];
+            foreach ($attachments as $fileName) {
 
                 $path = $this->attachmentProvider->getAttachment($fileName);
                 $message->attachFromPath($path, $fileName);
@@ -153,7 +153,7 @@ class Sender
 
         }
         catch(TransportExceptionInterface $e){
-            dump($e);
+//            dump($e);
         }
 
         return $this;
