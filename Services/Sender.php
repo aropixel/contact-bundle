@@ -84,12 +84,13 @@ class Sender
      * @param $em
      * @param $mailer
      */
-    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, Environment $templating)
+    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, Environment $templating, AttachmentProvider $attachmentProvider)
     {
         $this->bcc = array();
         $this->em = $em;
         $this->mailer = $mailer;
         $this->templating = $templating;
+        $this->attachmentProvider = $attachmentProvider;
     }
 
 
@@ -134,6 +135,13 @@ class Sender
                 ->to(new Address($this->contact->getEmailTo(), $this->contact->getNomTo()))
                 ->html($html)
             ;
+
+
+            foreach ($this->contact->getAttachments() as $fileName) {
+
+                $path = $this->attachmentProvider->getAttachment($fileName);
+                $message->attachFromPath($path, $fileName);
+            }
 
             //
             if (count($this->bcc)) {
