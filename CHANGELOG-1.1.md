@@ -4,8 +4,11 @@ CHANGELOG for 1.0.x
 This changelog references the relevant changes (bug and security fixes) done
 in 1.0 minor versions.
 
-* **1.1.4** _(20xx-xx-xx)_
+* **1.1.5** _(20xx-xx-xx)_
 
+
+* **1.1.4** _(2021-06-11)_
+    * Bugfix sort messages by date
 
 * **1.1.3** _(2021-01-19)_
     * Add attachments in notification email
