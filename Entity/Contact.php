@@ -2,380 +2,193 @@
 
 namespace Aropixel\ContactBundle\Entity;
 
+use Aropixel\ContactBundle\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Form\Form;
 
-/**
- * Contact
- *
- * @ORM\Table(name="aropixel_contact")
- * @ORM\Entity(repositoryClass="Aropixel\ContactBundle\Repository\ContactRepository")
- */
+#[ORM\Table(name: "aropixel_contact")]
+#[ORm\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(name: "id", type: "integer")]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom_from", type="string", length=255, nullable=true)
-     */
-    private $nomFrom;
+    #[ORM\Column(name: "nom_from", type: "string", length: 255, nullable: true)]
+    private ?string $nomFrom;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom_to", type="string", length=255, nullable=true)
-     */
-    private $nomTo;
+    #[ORM\Column(name: "nom_to", type: "string", length: 255, nullable: true)]
+    private ?string $nomTo;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email_from", type="string", length=255)
-     */
-    private $emailFrom;
+    #[ORM\Column(name: "email_from", type: "string", length: 255)]
+    private string $emailFrom;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email_to", type="string", length=255)
-     */
-    private $emailTo;
+    #[ORM\Column(name: "email_to", type: "string", length: 255)]
+    private string $emailTo;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="objet", type="text", nullable=true)
-     */
-    private $objet;
+    #[ORM\Column(name: "objet", type: "text", nullable: true)]
+    private ?string $objet;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="message", type="text", nullable=true)
-     */
-    private $message;
+    #[ORM\Column(name: "message", type: "text", nullable: true)]
+    private ?string $message;
 
-    /**
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
-    protected $description;
+    #[ORM\Column(name: "description", type: "text", nullable: true)]
+    protected ?string $description;
 
-    /**
-     * @ORM\Column(name="informations", type="array", nullable=true)
-     */
-    protected $informations;
+    #[ORM\Column(name: "informations", type: "json", nullable: true)]
+    protected ?array $informations;
 
-    /**
-     * @ORM\Column(name="attachments", type="array", nullable=true)
-     */
-    protected $attachments;
+    #[ORM\Column(name: "attachments", type: "json", nullable: true)]
+    protected ?array $attachments;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="readed", type="boolean")
-     */
-    protected $read;
+    #[ORM\Column(name: "read", type: "boolean")]
+    protected bool $read;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="answered", type="boolean")
-     */
-    protected $answered;
+    #[ORm\Column(name: "answered", type: "boolean")]
+    protected bool $answered;
 
-    /**
-     * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
-     */
-    private $createdAt;
+    #[Gedmo\Timestampable(on: "create")]
+    #[ORM\Column(name: "created_at", type: "datetime", nullable: true)]
+    private ?\DateTime $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="answered_at", type="datetime", nullable=true)
-     */
-    private $answeredAt;
+    #[ORM\Column(name: "answered_at", type: "datetime", nullable: true)]
+    private ?\DateTime $answeredAt = null;
 
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set nomFrom
-     *
-     * @param string $nomFrom
-     *
-     * @return Contact
-     */
-    public function setNomFrom($nomFrom)
+    public function setNomFrom(string $nomFrom) : Contact
     {
         $this->nomFrom = $nomFrom;
 
         return $this;
     }
 
-    /**
-     * Get nomFrom
-     *
-     * @return string
-     */
-    public function getNomFrom()
+    public function getNomFrom() : string
     {
         return $this->nomFrom;
     }
 
-    /**
-     * Set nomTo
-     *
-     * @param string $nomTo
-     *
-     * @return Contact
-     */
-    public function setNomTo($nomTo)
+    public function setNomTo(string $nomTo) : Contact
     {
         $this->nomTo = $nomTo;
 
         return $this;
     }
 
-    /**
-     * Get nomTo
-     *
-     * @return string
-     */
-    public function getNomTo()
+    public function getNomTo() : string
     {
         return $this->nomTo;
     }
 
-    /**
-     * Set emailFrom
-     *
-     * @param string $emailFrom
-     *
-     * @return Contact
-     */
-    public function setEmailFrom($emailFrom)
+    public function setEmailFrom(string $emailFrom) : Contact
     {
         $this->emailFrom = $emailFrom;
 
         return $this;
     }
 
-    /**
-     * Get emailFrom
-     *
-     * @return string
-     */
-    public function getEmailFrom()
+    public function getEmailFrom() : string
     {
         return $this->emailFrom;
     }
 
-    /**
-     * Set emailTo
-     *
-     * @param string $emailTo
-     *
-     * @return Contact
-     */
-    public function setEmailTo($emailTo)
+    public function setEmailTo(string $emailTo) : Contact
     {
         $this->emailTo = $emailTo;
 
         return $this;
     }
 
-    /**
-     * Get emailTo
-     *
-     * @return string
-     */
-    public function getEmailTo()
+    public function getEmailTo() : string
     {
         return $this->emailTo;
     }
 
-    /**
-     * Set message
-     *
-     * @param string $message
-     *
-     * @return Contact
-     */
-    public function setMessage($message)
+    public function setMessage(string $message) : Contact
     {
         $this->message = $message;
 
         return $this;
     }
 
-    /**
-     * Get message
-     *
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage() : string
     {
         return $this->message;
     }
 
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Contact
-     */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt) : Contact
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
+    public function getCreatedAt() : \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * Set answeredAt
-     *
-     * @param \DateTime $answeredAt
-     *
-     * @return Contact
-     */
-    public function setAnsweredAt($answeredAt)
+    public function setAnsweredAt(\DateTime $answeredAt) : Contact
     {
         $this->answeredAt = $answeredAt;
 
         return $this;
     }
 
-    /**
-     * Get answeredAt
-     *
-     * @return \DateTime
-     */
-    public function getAnsweredAt()
+    public function getAnsweredAt() : \DateTime
     {
         return $this->answeredAt;
     }
 
-    /**
-     * Set read
-     *
-     * @param boolean $read
-     *
-     * @return Contact
-     */
-    public function setRead($read)
+    public function setRead(bool $read) : Contact
     {
         $this->read = $read;
 
         return $this;
     }
 
-    /**
-     * Get read
-     *
-     * @return boolean
-     */
-    public function getRead()
+    public function getRead() : bool
     {
         return $this->read;
     }
 
-    /**
-     * Set answered
-     *
-     * @param boolean $answered
-     *
-     * @return Contact
-     */
-    public function setAnswered($answered)
+    public function setAnswered(bool $answered) : Contact
     {
         $this->answered = $answered;
 
         return $this;
     }
 
-    /**
-     * Get answered
-     *
-     * @return boolean
-     */
-    public function getAnswered()
+    public function getAnswered() : bool
     {
         return $this->answered;
     }
 
 
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Contact
-     */
-    public function setDescription($description)
+    public function setDescription(string $description) : Contact
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }
 
-    /**
-     * Set informations
-     *
-     * @param array|Form $informations
-     * @param array $fields
-     *
-     * @return Contact
-     */
-    public function setInformations($informations, $fields=null)
+    public function setInformations(array $informations, array $fields=null) : Contact
     {
         if (is_null($fields)) {
             $this->informations = $informations;
-            return;
-        }
+            }
 
         $form = $informations;
         $formFields = $form->all();
@@ -408,56 +221,30 @@ class Contact
         return $this;
     }
 
-    /**
-     * Get informations
-     *
-     * @return array
-     */
-    public function getInformations()
+    public function getInformations() : array
     {
         return $this->informations;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAttachments()
+    public function getAttachments() : ?array
     {
         return $this->attachments;
     }
 
-    /**
-     * @param string $filename
-     * @return Contact
-     */
-    public function addAttachment($title, $filename)
+    public function addAttachment($title, string $filename) : Contact
     {
         $this->attachments[$title] = $filename;
         return $this;
     }
 
-
-
-    /**
-     * Set objet
-     *
-     * @param string $objet
-     *
-     * @return Contact
-     */
-    public function setObjet($objet)
+    public function setObjet(string $objet) : Contact
     {
         $this->objet = $objet;
 
         return $this;
     }
 
-    /**
-     * Get objet
-     *
-     * @return string
-     */
-    public function getObjet()
+    public function getObjet() : string
     {
         return $this->objet;
     }

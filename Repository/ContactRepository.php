@@ -2,6 +2,8 @@
 
 namespace Aropixel\ContactBundle\Repository;
 
+use Aropixel\ContactBundle\Entity\Contact;
+
 /**
  * BailleurRepository
  *
@@ -10,4 +12,22 @@ namespace Aropixel\ContactBundle\Repository;
  */
 class ContactRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function save(Contact $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Contact $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 }
