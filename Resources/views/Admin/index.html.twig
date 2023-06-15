@@ -28,26 +28,47 @@
         </thead>
         <tbody>
         {% for contact in contacts %}
+            {% dump contact %}
             <tr>
-                <td style="vertical-align: top">{{ contact.createdAt|datetime('dd/MM/y H:mm') }}</td>
-                <td>
+                <td style="vertical-align: top; {% if contact.read == false %}background-color: rgba(12,171,168,0.11);{% endif %}">{{ contact.createdAt|datetime('dd/MM/y H:mm') }}</td>
+                <td {% if contact.read == false %}style="background-color: rgba(12,171,168,0.11);" {% endif %}>
                     <strong style="width: 45px; display: inline-block;">De:</strong>{{ contact.nomFrom ? contact.nomFrom ~ ' ' : '' }}&nbsp;&nbsp;&lt;{{ contact.emailFrom }}&gt;<br />
                     <strong style="width: 45px; display: inline-block;">À:</strong>{{ contact.nomTo ? contact.nomTo ~ ' ' : '' }}&nbsp;&nbsp;&lt;{{ contact.emailTo }}&gt;<br />
                     <strong style="width: 45px; display: inline-block;">Objet:</strong>{{ contact.objet }}<br />
                     <div class="m-t-5 text-muted">{{ contact.message | u.truncate(120, false, '...') }}</div>
                 </td>
-                <td style="vertical-align: top">
+
+                <td class="text-right" style="vertical-align: top; {% if contact.read == false %}background-color: rgba(12,171,168,0.11);{% endif %}">
                     <div class="btn-group">
-                        <a href="{{ path('aropixel_contact_edit', {'id': contact.id}) }}" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }}"><b><i class="icon-search4"></i></b> Consulter</a>
-                        <button type="button" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }} dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li class="dropdown-item"><a href="{{ path('aropixel_contact_edit', {'id': contact.id}) }}"><i class="fas fa-search"></i> Consulter</a></li>
-                            <li class="dropdown-divider"></li>
-                            <li class="dropdown-item"><a class="delete" data-confirm="Êtes-vous certain de vouloir supprimer ce contact ?"><i class="fas fa-trash"></i> Supprimer</a></li>
-                        </ul>
-                        {{ form(delete_forms[contact.id]) }}
+                        <button type="button" class="badge badge-light badge-icon" data-bs-toggle="dropdown" data-boundary="viewport">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" data-bs-popper="static">
+                            <a href="{{ path('aropixel_contact_edit', {'id': contact.id}) }}" class="dropdown-item has-icon"><i class="fas fa-edit"></i> {% trans %}Edit{% endtrans %}</a>
+                            <div class="dropdown-divider"></div>
+                            <a data-confirm="Êtes-vous certain de vouloir supprimer ce contact ?" class="delete dropdown-item has-icon text-danger">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </a>
+                            {{ form(delete_forms[contact.id]) }}
+                        </div>
                     </div>
                 </td>
+
+
+
+
+                {#                <td style="vertical-align: top">#}
+{#                    <div class="btn-group">#}
+{#                        <a href="{{ path('aropixel_contact_edit', {'id': contact.id}) }}" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }}"><b><i class="icon-search4"></i></b> Consulter</a>#}
+{#                        <button type="button" class="btn {{ not contact.read ? 'btn-primary' : 'btn-default' }} dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>#}
+{#                        <ul class="dropdown-menu dropdown-menu-right">#}
+{#                            <li class="dropdown-item"><a href="{{ path('aropixel_contact_edit', {'id': contact.id}) }}"><i class="fas fa-search"></i> Consulter</a></li>#}
+{#                            <li class="dropdown-divider"></li>#}
+{#                            <li class="dropdown-item"><a class="delete" data-confirm="Êtes-vous certain de vouloir supprimer ce contact ?"><i class="fas fa-trash"></i> Supprimer</a></li>#}
+{#                        </ul>#}
+{#                        {{ form(delete_forms[contact.id]) }}#}
+{#                    </div>#}
+{#                </td>#}
             </tr>
         {% endfor %}
         </tbody>

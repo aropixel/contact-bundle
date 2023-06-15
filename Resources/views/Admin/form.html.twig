@@ -33,59 +33,64 @@
 {% block mainPanel %}
 
     <div class="card">
-        <div class="card-header">
-            <h6>Destinataire:&nbsp;&nbsp;<span class="text-semibold">{{ contact.nomTo }}</span>&nbsp;&nbsp;<span class="text-size-small">&lt;{{ contact.emailTo }}&gt;</span></h6>
-        </div>
-        <div class="table-responsive">
-            <table class="table">
-                <tr>
-                    <td><span class="text-semibold">Objet</span></td>
-                    <td>{{ contact.objet }}</td>
-                </tr>
-                <tr>
-                    <td><span class="text-semibold">Nom</span></td>
-                    <td>{{ contact.nomFrom }}</td>
-                </tr>
-                <tr>
-                    <td><span class="text-semibold">Email</span></td>
-                    <td>{{ contact.emailFrom }}</td>
-                </tr>
-                {% if contact.attachments %}
-                    <tr>
-                        <td><span class="text-semibold">Pièces jointes:</span></td>
-                        <td>
-                        {% for label,value in contact.attachments %}
-                            {% if not loop.first %}<br />{% endif %}{{ label }}: <a href="{{ path('aropixel_contact_download', {'id': contact.id, 'file': value}) }}">{{ value }}</a>
-                        {% endfor %}
-                        </td>
-                    </tr>
-                {% endif %}
-                {% for label,value in contact.informations %}
-                    <tr>
-                        <td><span class="text-semibold">{{ label }}</span></td>
-                        <td>{{ value }}</td>
-                    </tr>
-                {% endfor %}
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>{{ contact.message|length ? contact.message|nl2br : '' }}</td>
-                </tr>
-            </table>
-        </div>
+        <div class="card-header" style="display: flex; justify-content: space-between">
+            <h6>
+                Destinataire:&nbsp;&nbsp;<br>
+                <span class="text-semibold">{{ contact.nomTo }}</span>&nbsp;&nbsp;<span class="text-size-small">&lt;{{ contact.emailTo }}&gt;</span>
+            </h6>
 
+            <div class="contact-state">
+                {{ form_row(form.read, {'value': '0', 'label_attr': {'class' : 'radio-inline custom-radio'}}) }}
+                {{ form_row(form.answered, {'value': '0', 'label_attr': {'class' : 'radio-inline custom-radio'}}) }}
+            </div>
+        </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped w-100">
+                            <tr>
+                                <td><span class="text-semibold">Objet</span></td>
+                                <td>{{ contact.objet }}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-semibold">Nom</span></td>
+                                <td>{{ contact.nomFrom }}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-semibold">Email</span></td>
+                                <td>{{ contact.emailFrom }}</td>
+                            </tr>
+                            {% if contact.attachments %}
+                                <tr>
+                                    <td><span class="text-semibold">Pièces jointes:</span></td>
+                                    <td>
+                                        {% for label,value in contact.attachments %}
+                                            {% if not loop.first %}<br />{% endif %}
+                                            {{ label }}: <a href="{{ path('aropixel_contact_download', {'id': contact.id, 'file': value}) }}">{{ value }}</a>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% for label,value in contact.informations %}
+                                <tr>
+                                    <td><span class="text-semibold">{{ label }}</span></td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td><span class="text-semibold">Message</span></td>
+                                <td>{{ contact.message|length ? contact.message|nl2br : '' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+        </div>
     </div>
 
 {% endblock %}
 
 
-{% block publishStatus %}
-
-    <div class="row">
-        <div class="col-md-12">
-            {{ form_row(form.read, {'value': '0', 'label_attr': {'class' : 'radio-inline'}}) }}
-            {{ form_row(form.answered, {'value': '0', 'label_attr': {'class' : 'radio-inline'}}) }}
-        </div>
-    </div>
-
+{% block publishState %}
 
 {% endblock %}
+

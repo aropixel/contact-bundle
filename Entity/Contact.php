@@ -221,7 +221,7 @@ class Contact
         return $this;
     }
 
-    public function getInformations() : array
+    public function getInformations() : array|null
     {
         return $this->informations;
     }
