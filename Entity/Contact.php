@@ -43,7 +43,7 @@ class Contact
     #[ORM\Column(name: "attachments", type: "json", nullable: true)]
     protected ?array $attachments;
 
-    #[ORM\Column(name: "read", type: "boolean")]
+    #[ORM\Column(name: "readed", type: "boolean")]
     protected bool $read;
 
     #[ORm\Column(name: "answered", type: "boolean")]
