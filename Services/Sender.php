@@ -99,7 +99,7 @@ class Sender
      *
      * @param Contact $contact
      */
-    public function saveAndSend(Contact $contact, $subject=false, ?string $ccAddress = null)
+    public function saveAndSend(Contact $contact, $subject=false)
     {
         //
         if ($subject) {
@@ -135,10 +135,6 @@ class Sender
                 ->to(new Address($this->contact->getEmailTo(), $this->contact->getNomTo()))
                 ->html($html)
             ;
-            if ($ccAddress)
-                {
-                    $message->cc($ccAddress);
-                }
 
             $attachments = $this->contact->getAttachments() ?: [];
             foreach ($attachments as $fileName) {
@@ -149,7 +145,9 @@ class Sender
 
             //
             if (count($this->bcc)) {
-                $message->bcc($this->bcc);
+                foreach ($this->bcc as $additionnalCc) {
+                    $message->bcc($additionnalCc);
+                }
             }
 
             //
