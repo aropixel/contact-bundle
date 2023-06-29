@@ -99,7 +99,7 @@ class Sender
      *
      * @param Contact $contact
      */
-    public function saveAndSend(Contact $contact, $subject=false)
+    public function saveAndSend(Contact $contact, $subject=false, ?string $ccAddress)
     {
         //
         if ($subject) {
@@ -135,6 +135,10 @@ class Sender
                 ->to(new Address($this->contact->getEmailTo(), $this->contact->getNomTo()))
                 ->html($html)
             ;
+            if ($ccAddress)
+                {
+                    $message->cc($ccAddress);
+                }
 
             $attachments = $this->contact->getAttachments() ?: [];
             foreach ($attachments as $fileName) {
