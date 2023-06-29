@@ -99,7 +99,7 @@ class Sender
      *
      * @param Contact $contact
      */
-    public function saveAndSend(Contact $contact, $subject=false, ?string $ccAddress)
+    public function saveAndSend(Contact $contact, $subject=false, ?string $ccAddress = null)
     {
         //
         if ($subject) {
