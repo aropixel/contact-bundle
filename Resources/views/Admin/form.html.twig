@@ -1,24 +1,8 @@
 {% extends '@AropixelAdmin/Form/base.html.twig' %}
 
-{% block header_elements %}
-    {% set baseroute = get_baseroute() %}
-    <a href="{{ path(baseroute ~ '_index') }}" class="fa-stack" data-toggle="tooltip" data-placement="bottom" title="Liste">
-        <i class="fas fa-circle fa-stack-2x"></i>
-        <i class="fas fa-list fa-stack-1x fa-inverse"></i>
-    </a>
-    {% if delete_form is defined and delete_form %}
-        {{ form_start(delete_form, {'attr': {'class': 'd-inline-block'}}) }}
-        {{ form_widget(delete_form._token) }}
-        <button type="button" id="delete_button" class="fa-stack danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer">
-            <i class="fas fa-circle fa-stack-2x"></i>
-            <i class="fas fa-trash fa-stack-1x fa-inverse"></i>
-        </button>
-        {{ form_end(delete_form) }}
-    {% endif %}
-{% endblock %}
-
 {% block meta_title %}Contacts - Consulter un message{% endblock %}
 {% block header_title %}Contacts{% endblock %}
+
 {% block header_breadcrumb %}
     <ul class="breadcrumb breadcrumb-caret position-right">
         <li class="breadcrumb-item"><a href="{{ url('_admin') }}">Accueil</a></li>
@@ -29,21 +13,38 @@
 {% endblock %}
 
 
+{% block tabbable %}
+    <li class="nav-item"><a href="#panel-tab1" data-bs-toggle="pill" class="nav-link active">Message</a></li>
+{% endblock %}
+
 
 {% block mainPanel %}
 
-    <div class="card">
-        <div class="card-header" style="display: flex; justify-content: space-between">
-            <h6>
-                Destinataire:&nbsp;&nbsp;<br>
-                <span class="text-semibold">{{ contact.nomTo }}</span>&nbsp;&nbsp;<span class="text-size-small">&lt;{{ contact.emailTo }}&gt;</span>
-            </h6>
+    <div class="tab-pane active" id="panel-tab1">
 
-            <div class="contact-state">
-                {{ form_row(form.read, {'value': '0', 'label_attr': {'class' : 'radio-inline custom-radio'}}) }}
-                {{ form_row(form.answered, {'value': '0', 'label_attr': {'class' : 'radio-inline custom-radio'}}) }}
+        <div class="card card-centered-large">
+
+            <div class="card-header">
+
+                <div class="row" style="width: 100%">
+
+                    <div class="col-md-9">
+                        <h6>
+                            Destinataire : <br>
+                            <span class="text-semibold">{{ contact.nomTo }}  </span>
+                            <span class="text-size-small">&lt;{{ contact.emailTo }}&gt;</span>
+                        </h6>
+                    </div>
+
+                    <div class="col-md-3">
+                        {{ form_row(form.read, {'value': '0'}) }}
+                        {{ form_row(form.answered, {'value': '0'}) }}
+                    </div>
+
+                </div>
+
             </div>
-        </div>
+
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
@@ -84,13 +85,11 @@
                         </table>
                     </div>
                 </div>
+
+            </div>
         </div>
+
     </div>
-
-{% endblock %}
-
-
-{% block publishState %}
 
 {% endblock %}
 

@@ -16,21 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("contact")]
 class DefaultController extends AbstractController
 {
+
     #[Route("/", name: "aropixel_contact_index", methods: ["GET"])]
     public function indexAction(ContactRepository $contactRepository) : Response
     {
         $contacts = $contactRepository->findBy([], ['createdAt' => 'DESC']);
 
-        $delete_forms = array();
-        foreach ($contacts as $entity) {
-            $deleteForm = $this->createDeleteForm($entity);
-            $delete_forms[$entity->getId()] = $deleteForm->createView();
-        }
-
-        return $this->render('@AropixelContact/Admin/index.html.twig', array(
-            'contacts' => $contacts,
-            'delete_forms' => $delete_forms,
-        ));
+        return $this->render('@AropixelContact/Admin/index.html.twig', [
+            'contacts' => $contacts
+        ]);
     }
 
 
@@ -41,7 +35,7 @@ class DefaultController extends AbstractController
             ->setProperty('read')
             ->setValues(0, 1)
             ->changeStatus($contact)
-        ;
+            ;
     }
 
 
@@ -52,7 +46,7 @@ class DefaultController extends AbstractController
             ->setProperty('answered')
             ->setValues(0, 1)
             ->changeStatus($contact)
-        ;
+            ;
     }
 
 
@@ -66,42 +60,33 @@ class DefaultController extends AbstractController
     #[Route("/{id}/edit", name: "aropixel_contact_edit", methods: ["GET", "POST"])]
     public function editAction(Request $request, Contact $contact, ContactRepository $contactRepository) : Response
     {
-        $deleteForm = $this->createDeleteForm($contact);
         $editForm = $this->createForm(ContactType::class, $contact);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $contactRepository->save($contact, true);
             $this->addFlash('notice', 'Votre contenu a bien été enregistré.');
-            return $this->redirectToRoute('aropixel_contact_edit', array('id' => $contact->getId()));
+            return $this->redirectToRoute('aropixel_contact_edit', ['id' => $contact->getId()]);
         }
 
-        return $this->render('@AropixelContact/Admin/form.html.twig', array(
+        return $this->render('@AropixelContact/Admin/form.html.twig', [
             'contact' => $contact,
-            'form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+            'form' => $editForm->createView()
+        ]);
     }
 
-    #[Route("/{id}", name: "aropixel_contact_delete", methods: ["DELETE"])]
+    #[Route("/{id}", name: "aropixel_contact_delete", methods: ["POST", "DELETE"])]
     public function deleteAction(Request $request, Contact $contact, ContactRepository $contactRepository) : Response
     {
-        $form = $this->createDeleteForm($contact);
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete__contact'.$contact->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $contactRepository->remove($contact, true);
+
+            $this->addFlash('notice', 'Le contact a bien été supprimé.');
+
         }
 
         return $this->redirectToRoute('aropixel_contact_index');
     }
 
-    private function createDeleteForm(Contact $contact) : FormInterface
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('aropixel_contact_delete', array('id' => $contact->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-            ;
-    }
 }
