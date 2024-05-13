@@ -17,10 +17,10 @@ class Contact
     private int $id;
 
     #[ORM\Column(name: "nom_from", type: "string", length: 255, nullable: true)]
-    private ?string $nomFrom;
+    private ?string $nomFrom = null;
 
     #[ORM\Column(name: "nom_to", type: "string", length: 255, nullable: true)]
-    private ?string $nomTo;
+    private ?string $nomTo = null;
 
     #[ORM\Column(name: "email_from", type: "string", length: 255)]
     private string $emailFrom;
@@ -29,19 +29,19 @@ class Contact
     private string $emailTo;
 
     #[ORM\Column(name: "objet", type: "text", nullable: true)]
-    private ?string $objet;
+    private ?string $objet = null;
 
     #[ORM\Column(name: "message", type: "text", nullable: true)]
-    private ?string $message;
+    private ?string $message = null;
 
     #[ORM\Column(name: "description", type: "text", nullable: true)]
-    protected ?string $description;
+    protected ?string $description = null;
 
     #[ORM\Column(name: "informations", type: "json", nullable: true)]
-    protected ?array $informations;
+    protected ?array $informations = null;
 
     #[ORM\Column(name: "attachments", type: "json", nullable: true)]
-    protected ?array $attachments;
+    protected ?array $attachments = null;
 
     #[ORM\Column(name: "readed", type: "boolean")]
     protected bool $read;
