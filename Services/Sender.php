@@ -9,15 +9,9 @@
 namespace Aropixel\ContactBundle\Services;
 
 use Aropixel\ContactBundle\Entity\Contact;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -28,91 +22,41 @@ use Twig\Environment;
 class Sender
 {
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * @var \Swift_Mailer
-     */
-    private $mailer;
-
-    /**
-     * @var TwigEngine
-     */
-    private $templating;
-
-    /**
-     * @var string
-     */
-    private $template;
-
-    /**
-     * @var string
-     */
-    private $templateNotify;
-    /**
-     * @var string
-     */
-    private $subject;
-    /**
-     * @var string
-     */
-    private $senderEmail;
-    /**
-     * @var string
-     */
-    private $senderName;
-    /**
-     * @var array
-     */
-    private $bcc;
-    /**
-     * @var Form
-     */
-    private $form;
-    /**
-     * @var Contact
-     */
-    private $contact;
-
+    private string $template;
+    private string $templateNotify;
+    private ?string $subject = null;
+    private string $senderEmail;
+    private string $senderName;
+    private ?array $bcc = null;
+    private Form $form;
+    private Contact $contact;
     private $data;
 
-    /**
-     * Sender constructor.
-     * @param $em
-     * @param $mailer
-     */
-    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, Environment $templating, AttachmentProvider $attachmentProvider)
-    {
-        $this->bcc = array();
-        $this->em = $em;
-        $this->mailer = $mailer;
-        $this->templating = $templating;
-        $this->attachmentProvider = $attachmentProvider;
+
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly MailerInterface $mailer,
+        private readonly Environment $templating,
+        private readonly AttachmentProvider $attachmentProvider
+    ){
+        $this->bcc = [];
     }
 
 
     /**
      * Sauvegarde le message en BDD, et envoie une notification à la personne concernée
-     *
-     * @param Contact $contact
      */
     public function saveAndSend(Contact $contact, $subject=false)
     {
-        //
         if ($subject) {
             $this->subject = $subject;
         }
 
-        //
         $this->contact = $contact;
         $this->contact->setRead(false);
         $this->contact->setAnswered(false);
         $this->em->persist($this->contact);
         $this->em->flush();
-
 
         // Prélève les données du formulaire pour les passer au template twig
         $fields = $this->form->all();
@@ -125,7 +69,6 @@ class Sender
 
             // Prépare le message HTML à envoyer
             $html = $this->templating->render($this->template, $this->data);
-
 
             // Construit le mail à envoyer
             $message = new Email();
@@ -143,26 +86,27 @@ class Sender
                 $message->attachFromPath($path, $fileName);
             }
 
-            //
-            if (count($this->bcc)) {
-                $message->bcc($this->bcc);
+            foreach ($this->bcc as $key => $bcc) {
+                if (0 === $key) {
+                    $message->bcc($bcc);
+                } else {
+                    $message->addBcc($bcc);
+                }
             }
 
-            //
             $this->mailer->send($message);
 
-        }
-        catch(TransportExceptionInterface $e){
+        } catch (TransportExceptionInterface $e){
 //            dump($e);
         }
 
         return $this;
     }
 
-    public function notify() {
+    public function notify()
+    {
 
-
-        try{
+        try {
 
             // Prépare le message HTML à envoyer
             $html = $this->templating->render($this->templateNotify, $this->data);
@@ -174,34 +118,27 @@ class Sender
                 ->to(new Address($this->contact->getEmailFrom(), $this->contact->getNomFrom()))
                 ->html($html);
 
-            //
             $this->mailer->send($message);
 
-        }
-        catch(TransportExceptionInterface $e){
-        }
-
+        } catch (TransportExceptionInterface $e){}
 
     }
 
 
     /**
      * Définit le formulaire associé à la prise de contact
-     *
-     * @param string $form
      */
-    public function setForm($form)
+    public function setForm(Form $form)
     {
         $this->form = $form;
+
         return $this;
     }
 
     /**
      * Définit le template Twig à utiliser pour l'envoi de la notification mail
-     *
-     * @param string $template
      */
-    public function setTemplate($template)
+    public function setTemplate(string $template)
     {
         $this->template = $template;
 
@@ -210,10 +147,8 @@ class Sender
 
     /**
      * Définit le template Twig à utiliser pour l'envoi de la notification de réponse automatique
-     *
-     * @param string $template
      */
-    public function setTemplateNotify($template)
+    public function setTemplateNotify(string $template)
     {
         $this->templateNotify = $template;
 
@@ -222,12 +157,8 @@ class Sender
 
     /**
      * Définit les paramètres à passer au template Twig pour l'envoi de notification mail
-     *
-     * @param array $body
-     *
-     * @return Sender
      */
-    public function setBody($body)
+    public function setBody($body) : Sender
     {
         $this->body = $body;
 
@@ -236,32 +167,24 @@ class Sender
 
     /**
      * Définit l'email expéditeur de l'envoi de la notification mail
-     *
-     * @param string $senderEmail
      */
-    public function setSenderEmail($senderEmail)
+    public function setSenderEmail(string $senderEmail)
     {
         $this->senderEmail = $senderEmail;
     }
 
     /**
      * Définit le nom de l'expéditeur de l'envoi de la notification mail
-     *
-     * @param string $senderName
      */
-    public function setSenderName($senderName)
+    public function setSenderName(string $senderName)
     {
         $this->senderName = $senderName;
     }
 
     /**
      * Définit le sujet mail de la notification mail
-     *
-     * @param string $subject
-     *
-     * @return Sender
      */
-    public function setSubject($subject)
+    public function setSubject(?string $subject = null) : Sender
     {
         $this->subject = $subject;
 
@@ -270,12 +193,8 @@ class Sender
 
     /**
      * Définit le ou les personnes à mettre en copie à la notification mail
-     *
-     * @param array $bcc
-     *
-     * @return Sender
      */
-    public function setBcc($bcc)
+    public function setBcc(?array $bcc = null) : Sender
     {
         $this->bcc = $bcc;
 

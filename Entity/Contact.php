@@ -237,15 +237,16 @@ class Contact
         return $this;
     }
 
-    public function setObjet(string $objet) : Contact
+    public function setObjet(?string $objet) : Contact
     {
         $this->objet = $objet;
 
         return $this;
     }
 
-    public function getObjet() : string
+    public function getObjet() : ?string
     {
         return $this->objet;
     }
+
 }
