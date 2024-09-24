@@ -19,7 +19,7 @@
   },
   "require" : {
     "aropixel/admin-bundle": "dev-release/symfony7",
-    "symfony/mailer": "^4.4|^5.0|^6.0|^7.1",
+    "symfony/mailer": "^4.4|^5.0|^6.0|^7.0",
     "twig/extra-bundle": "^3.7"
   },
   "scripts": {
