@@ -81,7 +81,7 @@ class Contact
         return $this;
     }
 
-    public function getNomTo() : string
+    public function getNomTo() : ?string
     {
         return $this->nomTo;
     }

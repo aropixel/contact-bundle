@@ -31,7 +31,7 @@
                         <strong style="width: 45px; display: inline-block;">Objet:</strong>{{ contact.objet }}<br />
                         <div class="m-t-5 text-muted">{{ contact.message | u.truncate(120, false, '...') }}</div>
                     </td>
-                    <td class="text-right">
+                    <td class="text-right" {% if contact.read == false %}style="background-color: rgba(12,171,168,0.11);" {% endif %}>
                         <div class="btn-group">
                             <button type="button" class="badge badge-light badge-icon" data-bs-toggle="dropdown" data-boundary="viewport">
                                 <i class="fas fa-ellipsis-h"></i>
